@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -32,7 +33,8 @@ namespace ReversiRestApi
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ReversiRestApi", Version = "v1" });
             });
-            services.AddScoped<ISpelRepository, SpelRepository>();
+            services.AddScoped<ISpelRepository, SpelAccessLayer>();
+            services.AddDbContext<SpelContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ReversiDbRestApi")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

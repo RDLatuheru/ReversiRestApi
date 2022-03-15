@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -25,6 +27,7 @@ namespace ReversiRestApi.Model
         public string Speler2Token { get; set; }
 
         private Kleur[,] bord;
+        [NotMapped]
         public Kleur[,] Bord
         {
             get
@@ -35,6 +38,14 @@ namespace ReversiRestApi.Model
             {
                 bord = value;
             }
+        }
+
+        [JsonProperty("bord")]
+        [Column("Bord")]
+        public string BordJson
+        { 
+            get => JsonConvert.SerializeObject(Bord); 
+            set => JsonConvert.DeserializeObject<Kleur[,]>(value); 
         }
 
         public Kleur AandeBeurt { get; set; }

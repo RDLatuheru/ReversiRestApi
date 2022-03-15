@@ -26,7 +26,7 @@ namespace ReversiRestApi.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<string>> GetSpelOmschrijvingenVanSpellenMetWachtendeSpeler()
         {
-            return iRepository.GetSpellen().FindAll(x => x.Speler2Token == null).Select(x => $"{x.Omschrijving} {x.Token}").ToList(); 
+            return iRepository.GetSpellen().FindAll(x => x.Speler2Token == null).Select(x => $"Omschrijving: {x.Omschrijving} | Speler1Token: {x.Token}").ToList();
         }
 
         // GET api/spel/{spelToken}
@@ -66,6 +66,8 @@ namespace ReversiRestApi.Controllers
         public ActionResult<SpelInfo> CreateSpel([FromBody]SpelInit spelInit)
         {
             Spel spel = new() { Speler1Token = spelInit.Speler1Token, Omschrijving = spelInit.Omschrijving, Token = CreateGUID() };
+
+            if (spel == null) return BadRequest(spel);
 
             iRepository.AddSpel(spel);
 
